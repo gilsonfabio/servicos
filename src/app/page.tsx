@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+
 import Image from 'next/image';
 import api from '@/components/Services/api';
 import { FaSearch } from 'react-icons/fa';
@@ -8,11 +9,6 @@ import Link from 'next/link';
 import Pagination from '@/components/Pagination';
 import { Menu, X } from 'lucide-react';
 import CardOuvidoria from '@/components/CardOuvidoria';
-
-type ModServices = {
-    "msvId": number;
-    "msvDescricao": string;
-}
 
 type Personas = {
     "id": number;
@@ -23,11 +19,6 @@ type Personas = {
 type TemasProps = {
     "id": number;
 	"name": string;
-}
-
-type TipServices = {
-    "tsvId": number;
-    "tsvDescricao": string;
 }
 
 type SecretariaProps = {
@@ -69,13 +60,13 @@ export default function Home() {
     const [modalidades, setModalidades] = useState<Array<Personas>>([]);
     const [tipos, setTipos] = useState<Array<TemasProps>>([]);
     const [servicos, setServicos] = useState<Array<ServicesProps>>([]);
-    const [secretarias] = useState<Array<SecretariaProps>>([]);
-    
+    const [secretarias, setSecretarias] = useState<Array<SecretariaProps>>([]);
+
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(0);
-    const [pagDefault] = useState(0);
+    const [pagDefault, setPagDefault] = useState(0);
     const perPageDefault = 12;
-    const [setNewPage] = useState(0);
+    const [newPage, setNewPage] = useState(0);
 
     const [clicked, setClicked] = useState(true);
     const handleToggle = () => {
@@ -148,11 +139,11 @@ export default function Home() {
             console.error("ops! ocorreu um erro temas" + err);
         }); 
 
-        //api.get("/secretarias").then(resp => {
-        //    setSecretarias(resp.data)           
-        //}).catch((err) => {
-        //    console.error("ops! ocorreu um erro secretarias" + err);
-        //}); 
+        api.get("/secretarias").then(resp => {
+            setSecretarias(resp.data)           
+        }).catch((err) => {
+            console.error("ops! ocorreu um erro secretarias" + err);
+        }); 
         
         setAtualiza(1);      
     }, [])
@@ -512,8 +503,6 @@ export default function Home() {
         setIdsTip(newIds);
         }   
     };
-
-    const [filSecret, setFilSecret] = useState([]); 
 
     const selectSecretaria = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedId = parseInt(event.target.value);

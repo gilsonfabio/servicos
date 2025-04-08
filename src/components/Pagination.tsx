@@ -9,7 +9,6 @@ interface pagesProps {
 }
 
 const Pagination = ({ pages, setCurrentPage, setNewPage, pagInitial }: pagesProps) => {
-    const [pagesView, setPagesView] = useState(12);    
     const [cntPages, setCntPages] = useState(1);
     const [nroPage, setNroPage] = useState(1); 
     

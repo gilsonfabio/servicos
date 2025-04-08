@@ -71,7 +71,8 @@ export default function Modal({ params }: { params: Promise<{ id: string }> }) {
         setAcesso(response.data.acesso.replace(/\r\n/g, "<br />"));
     })
     .catch(error => console.log(error))
-    .finally(() => setLoading(false)); 
+    .finally(() => setLoading(false));
+     
   }, []);
     
   if (loading) {
