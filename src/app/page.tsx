@@ -84,9 +84,9 @@ export default function Home() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(0);
-    const [pagDefault, _setPagDefault] = useState(0);
+    const [pagDefault, setPagDefault] = useState(0);
     const perPageDefault = 12;
-    const [_newPage, setNewPage] = useState(0);
+    const [newPage, setNewPage] = useState(0);
 
     const [clicked, setClicked] = useState(true);
     const handleToggle = () => {
@@ -134,6 +134,8 @@ export default function Home() {
         testeJson.page = 1;
         delete testeJson.per_page;
         testeJson.per_page = perPageDefault;
+        
+        setPagDefault(12);
 
         console.log(testeJson);
 
@@ -501,7 +503,7 @@ export default function Home() {
     }, [search])
 
     const selectModalidade = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedId = parseInt(event.target.value) as any;
+        const selectedId = parseInt(event.target.value);
         if (idsMod.includes(selectedId)) {
             const newIds = idsMod.filter((id:any) => id !== selectedId);
             setIdsMod(newIds);
@@ -814,7 +816,8 @@ export default function Home() {
                                     </div>
                                 </div>
                                 <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 rounded-lg '> 
-                                    <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>                                 
+                                    <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>   
+                                        {newPage}                              
                                     </div>
                                     <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
                                         <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
