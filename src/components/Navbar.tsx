@@ -66,23 +66,17 @@ export default function Navbar({
             {showBtnInf && btnInf}
 
             <button
-              className="btn px-2 py-1 -mt-3 text-white text-xs uppercase rounded hover:text-gray-600 transition duration-150"
-              onClick={handleFontSmall}
-            >
+              className="btn px-2 text-white text-xs uppercase rounded hover:text-gray-600 transition duration-150" onClick={handleFontSmall}>
               <p className="text-xl">A-</p>
             </button>
 
             <button
-              className="btn px-2 py-1 -mt-3 text-white text-xs uppercase rounded hover:text-gray-600 transition duration-150"
-              onClick={handleFontLarge}
-            >
+              className="btn px-2 text-white text-xs uppercase rounded hover:text-gray-600 transition duration-150" onClick={handleFontLarge}>
               <p className="text-xl">A+</p>
             </button>
 
             <button
-              className="text-white hover:text-gray-400 px-3 py-2 text-sm"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-            >
+              className="text-white hover:text-gray-400 px-3 py-2 text-sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
               <FaAdjust className="w-4 h-4" />
             </button>
           </div>
