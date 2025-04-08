@@ -26,24 +26,44 @@ type SecretariaProps = {
     "slug": string;
 }
 
+type Localidade = {
+    id: number;
+    nome: string;
+};
+  
+type Secretaria = {
+    id: number;
+    nome: string;
+};
+  
+type Persona = {
+    id: number;
+    tipo: string;
+};
+  
+type Tema = {
+    id: number;
+    titulo: string;
+};
+
 type ServicesProps = {
-    "pagination": {
-		"page": number;
-		"per_page": number;
-		"lastPage": number;
-		"countUser": number;
-		"offset": number
-    }
-    "id": number; 
-    "nome": string; 
-    "descricao": string; 
-    "instrucao": string; 
-    "link": string; 
-    "localidade": any[],
-    "secretaria": any[];
-    "persona": any[];
-    "tema": any[];
-}
+    pagination: {
+      page: number;
+      per_page: number;
+      lastPage: number;
+      countUser: number;
+      offset: number;
+    };
+    id: number; 
+    nome: string; 
+    descricao: string; 
+    instrucao: string; 
+    link: string; 
+    localidade: Localidade[];
+    secretaria: Secretaria[];
+    persona: Persona[];
+    tema: Tema[];
+};
 
 interface filtros {
     "modalidade"?: Array<number>;
@@ -64,9 +84,9 @@ export default function Home() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(0);
-    const [pagDefault, setPagDefault] = useState(0);
+    const [pagDefault, _setPagDefault] = useState(0);
     const perPageDefault = 12;
-    const [newPage, setNewPage] = useState(0);
+    const [_newPage, setNewPage] = useState(0);
 
     const [clicked, setClicked] = useState(true);
     const handleToggle = () => {
