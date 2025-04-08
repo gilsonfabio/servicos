@@ -46,12 +46,12 @@ type ServicesProps = {
 }
 
 interface filtros {
-    "modalidade" ?: Array<number>;
-    "tipo" ?: Array<number>;
-    "secretaria" ?: Array<number>;
-    "searchString" ?: string;
-    "page" ?: number;
-    "per_page" ?: number;
+    "modalidade"?: Array<number>;
+    "tipo"?: Array<number>;
+    "secretaria"?: Array<number>;
+    "searchString"?: string;
+    "page"?: number;
+    "per_page"?: number;
 }
 
 export default function Home() {
@@ -88,9 +88,9 @@ export default function Home() {
     const [idsSec, setIdsSec] = useState<Array<number>>([]);
     const [search, setSearch] = useState('');
 
-    const itemsCard2 = [
-        {carId: 4, carTitle: 'Fale com a Ouvidoria', carTexto: 'Acesse o Sistema Eletrônico', carLink: 'https://sigp.aparecida.go.gov.br/sig/app.html#/servicosonline/ouvidoria2', carImage:'004'},     
-    ]  
+    //const itemsCard2 = [
+    //    {carId: 4, carTitle: 'Fale com a Ouvidoria', carTexto: 'Acesse o Sistema Eletrônico', carLink: 'https://sigp.aparecida.go.gov.br/sig/app.html#/servicosonline/ouvidoria2', carImage:'004'},     
+    //]  
 
     const [busca, setBusca] = useState<Array<ServicesProps>>([]);
 
