@@ -44,6 +44,7 @@ type Persona = {
 type Tema = {
     id: number;
     titulo: string;
+    icone: string;
 };
 
 type ServicesProps = {
@@ -59,6 +60,7 @@ type ServicesProps = {
     descricao: string; 
     instrucao: string; 
     link: string; 
+    acesso: string;
     localidade: Localidade[];
     secretaria: Secretaria[];
     persona: Persona[];
@@ -505,7 +507,7 @@ export default function Home() {
     const selectModalidade = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedId = parseInt(event.target.value);
         if (idsMod.includes(selectedId)) {
-            const newIds = idsMod.filter((id:any) => id !== selectedId);
+            const newIds = idsMod.filter((id) => id !== selectedId);
             setIdsMod(newIds);
         } else {
             const newIds = [...idsMod];
@@ -781,11 +783,11 @@ export default function Home() {
                             <div className='w-full h-auto mr-2 dark:bg-gray-800 '> 
                                 <div className='flex flex-col w-full h-full text-black'>
                                     <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
-                                    {servicos?.map((item:any, idx: any) => (
+                                    {servicos?.map((item, idx ) => (
                                         <div key={idx} className='bg-[#fff7ed] h-64 mt-1 mb-3 rounded-lg overflow-hidden shadow-lg dark:hover:bg-black '> 
                                             <div className="flex flex-row items-start px-2 py-0 mt-1 ">
                                                 <div className="flex border border-black w-auto h-auto rounded-lg items-start p-2">
-                                                    {(item.tema || []).map((tema: any, lnh:string) => (
+                                                    {(item.tema || []).map((tema, lnh) => (
                                                         <Image key={lnh} src={tema.icone} alt="Descrição da imagem" width={32} height={32} className ='w-8 h-8' />
                                                     ))}                                                 
                                                 </div>
