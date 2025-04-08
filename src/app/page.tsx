@@ -116,7 +116,7 @@ export default function Home() {
 
     const [busca, setBusca] = useState<Array<ServicesProps>>([]);
 
-    const urlBase = process.env.URL_BASE_ACCESS;
+    //const urlBase = process.env.URL_BASE_ACCESS;
     
     const testeJson:filtros = {
         modalidade: [],
@@ -179,7 +179,7 @@ export default function Home() {
                 console.log('filtro: 1')
                 axios({
                     method: 'get',    
-                    url: `${urlBase}per_page=${perPageDefault}&page=${currentPage}`,
+                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
                 }).then(function(response) {
                     setServicos(response.data)
                     setPages(Number(response.headers["x-wp-totalpages"]));
@@ -191,7 +191,7 @@ export default function Home() {
                     console.log('filtro: 2')
                     axios({
                         method: 'get',    
-                        url: `${urlBase}persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
+                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
                     }).then(function(response) {
                         setServicos(response.data)
                         setPages(Number(response.headers["x-wp-totalpages"]));
@@ -203,7 +203,7 @@ export default function Home() {
                         console.log('filtro: 3')
                         axios({
                             method: 'get',    
-                            url: `${urlBase}persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
                         }).then(function(response) {
                             setServicos(response.data)
                             setPages(Number(response.headers["x-wp-totalpages"]));
@@ -215,7 +215,7 @@ export default function Home() {
                             console.log('filtro: 4')
                             axios({
                                 method: 'get',    
-                                url: `${urlBase}persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                             }).then(function(response) {
                                 setServicos(response.data)
                                 setPages(Number(response.headers["x-wp-totalpages"]));
@@ -227,7 +227,7 @@ export default function Home() {
                                 console.log('filtro: 5')
                                 axios({
                                     method: 'get',    
-                                    url: `${urlBase}secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                 }).then(function(response) {
                                     setServicos(response.data)
                                     setPages(Number(response.headers["x-wp-totalpages"]));
@@ -239,7 +239,7 @@ export default function Home() {
                                     console.log('filtro: 6')
                                     axios({
                                         method: 'get',    
-                                        url: `${urlBase}secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
                                     }).then(function(response) {
                                         setServicos(response.data)
                                         setPages(Number(response.headers["x-wp-totalpages"]));
@@ -251,7 +251,7 @@ export default function Home() {
                                         console.log('filtro: 7')
                                         axios({
                                             method: 'get',    
-                                            url: `${urlBase}temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                         }).then(function(response) {
                                             setServicos(response.data)
                                             setPages(Number(response.headers["x-wp-totalpages"]));
@@ -263,7 +263,7 @@ export default function Home() {
                                             console.log('filtro: 8')
                                             axios({
                                                 method: 'get',    
-                                                url: `${urlBase}persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                             }).then(function(response) {
                                                 setServicos(response.data)
                                                 setPages(Number(response.headers["x-wp-totalpages"]));
@@ -286,7 +286,7 @@ export default function Home() {
                 console.log('filtro: 1')
                 axios({
                     method: 'get',    
-                    url: `${urlBase}per_page=${perPageDefault}&page=${currentPage}`,
+                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
                 }).then(function(response) {
                     setServicos(response.data)
                 }).catch(function(error) {
@@ -297,7 +297,7 @@ export default function Home() {
                     console.log('filtro: 2')
                     axios({
                         method: 'get',    
-                        url: `${urlBase}persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
+                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
                     }).then(function(response) {
                         setServicos(response.data)
                     }).catch(function(error) {
@@ -308,7 +308,7 @@ export default function Home() {
                         console.log('filtro: 3')
                         axios({
                             method: 'get',    
-                            url: `${urlBase}persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
                         }).then(function(response) {
                             setServicos(response.data)
                         }).catch(function(error) {
@@ -319,7 +319,7 @@ export default function Home() {
                             console.log('filtro: 4')
                             axios({
                                 method: 'get',    
-                                url: `${urlBase}persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                             }).then(function(response) {
                                 setServicos(response.data)
                             }).catch(function(error) {
@@ -330,7 +330,7 @@ export default function Home() {
                                 console.log('filtro: 5')
                                 axios({
                                     method: 'get',    
-                                    url: `${urlBase}secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                 }).then(function(response) {
                                     setServicos(response.data)
                                 }).catch(function(error) {
@@ -341,7 +341,7 @@ export default function Home() {
                                     console.log('filtro: 6')
                                     axios({
                                         method: 'get',    
-                                        url: `${urlBase}secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
                                     }).then(function(response) {
                                         setServicos(response.data)
                                     }).catch(function(error) {
@@ -352,7 +352,7 @@ export default function Home() {
                                         console.log('filtro: 7')
                                         axios({
                                             method: 'get',    
-                                            url: `${urlBase}temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                         }).then(function(response) {
                                             setServicos(response.data)
                                         }).catch(function(error) {
@@ -363,7 +363,7 @@ export default function Home() {
                                             console.log('filtro: 8')
                                             axios({
                                                 method: 'get',    
-                                                url: `${urlBase}persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                             }).then(function(response) {
                                                 setServicos(response.data)
                                             }).catch(function(error) {
@@ -386,7 +386,7 @@ export default function Home() {
                 console.log('filtro: 1')
                 axios({
                     method: 'get',    
-                    url: `${urlBase}per_page=${perPageDefault}&page=${currentPage}`,
+                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
                 }).then(function(response) {
                     setServicos(response.data)
                     setPages(Number(response.headers["x-wp-totalpages"]));
@@ -398,7 +398,7 @@ export default function Home() {
                     console.log('filtro: 2')
                     axios({
                         method: 'get',    
-                        url: `${urlBase}persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
+                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
                     }).then(function(response) {
                         setServicos(response.data)
                         setPages(Number(response.headers["x-wp-totalpages"]));
@@ -410,7 +410,7 @@ export default function Home() {
                         console.log('filtro: 3')
                         axios({
                             method: 'get',    
-                            url: `${urlBase}persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
                         }).then(function(response) {
                             setServicos(response.data)
                             setPages(Number(response.headers["x-wp-totalpages"]));
@@ -422,7 +422,7 @@ export default function Home() {
                             console.log('filtro: 4')
                             axios({
                                 method: 'get',    
-                                url: `${urlBase}persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                             }).then(function(response) {
                                 setServicos(response.data)
                                 setPages(Number(response.headers["x-wp-totalpages"]));
@@ -434,7 +434,7 @@ export default function Home() {
                                 console.log('filtro: 5')
                                 axios({
                                     method: 'get',    
-                                    url: `${urlBase}secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                 }).then(function(response) {
                                     setServicos(response.data)
                                     setPages(Number(response.headers["x-wp-totalpages"]));
@@ -446,7 +446,7 @@ export default function Home() {
                                     console.log('filtro: 6')
                                     axios({
                                         method: 'get',    
-                                        url: `${urlBase}secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
                                     }).then(function(response) {
                                         setServicos(response.data)
                                         setPages(Number(response.headers["x-wp-totalpages"]));
@@ -458,7 +458,7 @@ export default function Home() {
                                         console.log('filtro: 7')
                                         axios({
                                             method: 'get',    
-                                            url: `${urlBase}temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                         }).then(function(response) {
                                             setServicos(response.data)
                                             setPages(Number(response.headers["x-wp-totalpages"]));
@@ -470,7 +470,7 @@ export default function Home() {
                                             console.log('filtro: 8')
                                             axios({
                                                 method: 'get',    
-                                                url: `${urlBase}persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
                                             }).then(function(response) {
                                                 setServicos(response.data)
                                                 setPages(Number(response.headers["x-wp-totalpages"]));
@@ -491,7 +491,7 @@ export default function Home() {
         if(atualiza === 1) {
             axios({
                 method: 'get',    
-                url: `${urlBase}per_page=${perPageDefault}&page=${currentPage}`,
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
             }).then(function(response) {
                 setBusca(response.data)
                 const regex = new RegExp(search, "i");

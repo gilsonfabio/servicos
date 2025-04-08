@@ -53,7 +53,7 @@ export default function Modal({ params }: { params: Promise<{ id: string }> }) {
 
   const { id } = use(params); 
   
-  const urlBase = process.env.URL_BASE_ACCESS;
+  //const urlBase = process.env.URL_BASE_ACCESS;
 
   useEffect(() => {   
     const idSrv = id;
