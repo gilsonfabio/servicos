@@ -143,7 +143,7 @@ export default function Home() {
 
         axios({
             method: 'get',    
-            url: `${urlBase}/servicos?per_page=${perPageDefault}&page=${currentPage}`,            
+            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,            
         }).then(function(response) {
             setServicos(response.data)
             setPages(Number(response.headers["x-wp-totalpages"]));

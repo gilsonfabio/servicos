@@ -58,7 +58,7 @@ export default function Modal({ params }: { params: Promise<{ id: string }> }) {
   useEffect(() => {   
     const idSrv = id;
 
-    axios.get(`${urlBase}/servicos/${idSrv}`)
+    axios.get(`https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos/${idSrv}`)
     .then(response => {
         setDescricao(response.data.nome);
         setObjetivo(response.data.descricao.replace(/\r\n/g, "<br />"));
