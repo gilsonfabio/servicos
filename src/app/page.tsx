@@ -801,14 +801,14 @@ export default function Home() {
                                                     <div className="text-[14px] mb-0" dangerouslySetInnerHTML={{ __html: item.descricao }} />
                                                 </div>                
                                             </div>  
-                                            <div className={!item.acesso ? "hidden" : "flex flex-row items-center justify-between w-full px-2"}>
+                                            <div className="flex flex-row items-center justify-between w-full px-2">
                                                 <Link href={`/SrvDetalhes/${item.id}`}>
                                                     <div className='flex items-center justify-center bg-white h-10 w-40 rounded-lg hover:bg-blue-950 border border-blue-600 text-blue-600 text-[12px] hover:text-white'>
                                                         <span className='px-2 font-semibold'>Detalhes do Serviço</span>
                                                     </div>  
                                                 </Link>
                                                 <Link href={`${item.acesso}`}>
-                                                    <div className='flex items-center justify-center bg-blue-600 h-10 w-40 rounded-lg hover:bg-blue-950 border border-blue-600 text-white text-[12px] hover:text-white'>
+                                                    <div className={!item.acesso ? "hidden" : 'flex items-center justify-center bg-blue-600 h-10 w-40 rounded-lg hover:bg-blue-950 border border-blue-600 text-white text-[12px] hover:text-white'}>
                                                         <span className='px-2 font-semibold'>Acesse o serviço online</span>
                                                     </div>  
                                                 </Link>
