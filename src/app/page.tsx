@@ -18,7 +18,7 @@ type Personas = {
 
 type TemasProps = {
     "id": number;
-	"name": string;
+	"nome": string;
 }
 
 type SecretariaProps = {
@@ -45,6 +45,7 @@ type Tema = {
     id: number;
     titulo: string;
     icone: string;
+    nome:string;
 };
 
 type ServicesProps = {
@@ -65,6 +66,7 @@ type ServicesProps = {
     secretaria: Secretaria[];
     persona: Persona[];
     tema: Tema[];
+    ativo: string;
 };
 
 interface filtros {
@@ -136,8 +138,6 @@ export default function Home() {
         testeJson.page = 1;
         delete testeJson.per_page;
         testeJson.per_page = perPageDefault;
-        
-        setPagDefault(12);
 
         console.log(testeJson);
 
@@ -145,7 +145,9 @@ export default function Home() {
             method: 'get',    
             url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,            
         }).then(function(response) {
-            setServicos(response.data)
+            const dados: ServicesProps[] = response.data;
+            const filtrados = dados.filter(item => item.ativo === "1");
+            setServicos(filtrados);
             setPages(Number(response.headers["x-wp-totalpages"]));
         }).catch(function(error) {
             console.log(error)
@@ -157,13 +159,13 @@ export default function Home() {
             console.error("ops! ocorreu um erro modalidades" + err);
         });    
      
-        api.get("/tema?_fields=id,name").then(res => {
+        api.get("/tema?per_page=50&_fields=id,nome").then(res => {
             setTipos(res.data)           
         }).catch((err) => {
             console.error("ops! ocorreu um erro temas" + err);
         }); 
 
-        api.get("/secretarias").then(resp => {
+        api.get("/secretaria?per_page=50").then(resp => {
             setSecretarias(resp.data)           
         }).catch((err) => {
             console.error("ops! ocorreu um erro secretarias" + err);
@@ -173,329 +175,213 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
-        setCurrentPage(1);      
-        if(atualiza === 1) {
-            if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                console.log('filtro: 1')
-                axios({
-                    method: 'get',    
-                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
-                }).then(function(response) {
-                    setServicos(response.data)
-                    setPages(Number(response.headers["x-wp-totalpages"]));
-                }).catch(function(error) {
-                    console.log(error)
-                })
-            }else 
-                if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                    console.log('filtro: 2')
-                    axios({
-                        method: 'get',    
-                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
-                    }).then(function(response) {
-                        setServicos(response.data)
-                        setPages(Number(response.headers["x-wp-totalpages"]));
-                    }).catch(function(error) {
-                        console.log(error)
-                    })
-                }else {
-                    if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                        console.log('filtro: 3')
-                        axios({
-                            method: 'get',    
-                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                        }).then(function(response) {
-                            setServicos(response.data)
-                            setPages(Number(response.headers["x-wp-totalpages"]));
-                        }).catch(function(error) {
-                            console.log(error)
-                        })
-                    }else {
-                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                            console.log('filtro: 4')
-                            axios({
-                                method: 'get',    
-                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                            }).then(function(response) {
-                                setServicos(response.data)
-                                setPages(Number(response.headers["x-wp-totalpages"]));
-                            }).catch(function(error) {
-                                console.log(error)
-                            })
-                        }else {
-                            if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                                console.log('filtro: 5')
-                                axios({
-                                    method: 'get',    
-                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                }).then(function(response) {
-                                    setServicos(response.data)
-                                    setPages(Number(response.headers["x-wp-totalpages"]));
-                                }).catch(function(error) {
-                                    console.log(error)
-                                })
-                            }else {
-                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                                    console.log('filtro: 6')
-                                    axios({
-                                        method: 'get',    
-                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                                    }).then(function(response) {
-                                        setServicos(response.data)
-                                        setPages(Number(response.headers["x-wp-totalpages"]));
-                                    }).catch(function(error) {
-                                        console.log(error)
-                                    })
-                                }else {
-                                    if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                        console.log('filtro: 7')
-                                        axios({
-                                            method: 'get',    
-                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                        }).then(function(response) {
-                                            setServicos(response.data)
-                                            setPages(Number(response.headers["x-wp-totalpages"]));
-                                        }).catch(function(error) {
-                                            console.log(error)
-                                        })
-                                    }else {
-                                        if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                            console.log('filtro: 8')
-                                            axios({
-                                                method: 'get',    
-                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                            }).then(function(response) {
-                                                setServicos(response.data)
-                                                setPages(Number(response.headers["x-wp-totalpages"]));
-                                            }).catch(function(error) {
-                                                console.log(error)
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } 
-                } 
-            }    
-    }, [idsMod, idsTip, idsSec, search])
-
-    useEffect(() => {      
-        if(atualiza === 1) {
-            if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                console.log('filtro: 1')
-                axios({
-                    method: 'get',    
-                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
-                }).then(function(response) {
-                    setServicos(response.data)
-                }).catch(function(error) {
-                    console.log(error)
-                })
-            }else 
-                if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                    console.log('filtro: 2')
-                    axios({
-                        method: 'get',    
-                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
-                    }).then(function(response) {
-                        setServicos(response.data)
-                    }).catch(function(error) {
-                        console.log(error)
-                    })
-                }else {
-                    if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                        console.log('filtro: 3')
-                        axios({
-                            method: 'get',    
-                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                        }).then(function(response) {
-                            setServicos(response.data)
-                        }).catch(function(error) {
-                            console.log(error)
-                        })
-                    }else {
-                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                            console.log('filtro: 4')
-                            axios({
-                                method: 'get',    
-                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                            }).then(function(response) {
-                                setServicos(response.data)
-                            }).catch(function(error) {
-                                console.log(error)
-                            })
-                        }else {
-                            if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                                console.log('filtro: 5')
-                                axios({
-                                    method: 'get',    
-                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                }).then(function(response) {
-                                    setServicos(response.data)
-                                }).catch(function(error) {
-                                    console.log(error)
-                                })
-                            }else {
-                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                                    console.log('filtro: 6')
-                                    axios({
-                                        method: 'get',    
-                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                                    }).then(function(response) {
-                                        setServicos(response.data)
-                                    }).catch(function(error) {
-                                        console.log(error)
-                                    })
-                                }else {
-                                    if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                        console.log('filtro: 7')
-                                        axios({
-                                            method: 'get',    
-                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                        }).then(function(response) {
-                                            setServicos(response.data)
-                                        }).catch(function(error) {
-                                            console.log(error)
-                                        })
-                                    }else {
-                                        if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                            console.log('filtro: 8')
-                                            axios({
-                                                method: 'get',    
-                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                            }).then(function(response) {
-                                                setServicos(response.data)
-                                            }).catch(function(error) {
-                                                console.log(error)
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } 
-                } 
-            }    
-    }, [currentPage])
-
-    useEffect(() => {
-        setCurrentPage(1);      
-        if(atualiza === 1) {
-            if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                console.log('filtro: 1')
-                axios({
-                    method: 'get',    
-                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
-                }).then(function(response) {
-                    setServicos(response.data)
-                    setPages(Number(response.headers["x-wp-totalpages"]));
-                }).catch(function(error) {
-                    console.log(error)
-                })
-            }else 
-                if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                    console.log('filtro: 2')
-                    axios({
-                        method: 'get',    
-                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
-                    }).then(function(response) {
-                        setServicos(response.data)
-                        setPages(Number(response.headers["x-wp-totalpages"]));
-                    }).catch(function(error) {
-                        console.log(error)
-                    })
-                }else {
-                    if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                        console.log('filtro: 3')
-                        axios({
-                            method: 'get',    
-                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                        }).then(function(response) {
-                            setServicos(response.data)
-                            setPages(Number(response.headers["x-wp-totalpages"]));
-                        }).catch(function(error) {
-                            console.log(error)
-                        })
-                    }else {
-                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                            console.log('filtro: 4')
-                            axios({
-                                method: 'get',    
-                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                            }).then(function(response) {
-                                setServicos(response.data)
-                                setPages(Number(response.headers["x-wp-totalpages"]));
-                            }).catch(function(error) {
-                                console.log(error)
-                            })
-                        }else {
-                            if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                                console.log('filtro: 5')
-                                axios({
-                                    method: 'get',    
-                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                }).then(function(response) {
-                                    setServicos(response.data)
-                                    setPages(Number(response.headers["x-wp-totalpages"]));
-                                }).catch(function(error) {
-                                    console.log(error)
-                                })
-                            }else {
-                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                                    console.log('filtro: 6')
-                                    axios({
-                                        method: 'get',    
-                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                                    }).then(function(response) {
-                                        setServicos(response.data)
-                                        setPages(Number(response.headers["x-wp-totalpages"]));
-                                    }).catch(function(error) {
-                                        console.log(error)
-                                    })
-                                }else {
-                                    if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                        console.log('filtro: 7')
-                                        axios({
-                                            method: 'get',    
-                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                        }).then(function(response) {
-                                            setServicos(response.data)
-                                            setPages(Number(response.headers["x-wp-totalpages"]));
-                                        }).catch(function(error) {
-                                            console.log(error)
-                                        })
-                                    }else {
-                                        if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                            console.log('filtro: 8')
-                                            axios({
-                                                method: 'get',    
-                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/persona=${idsMod}&temas=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                            }).then(function(response) {
-                                                setServicos(response.data)
-                                                setPages(Number(response.headers["x-wp-totalpages"]));
-                                            }).catch(function(error) {
-                                                console.log(error)
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } 
-                } 
-            }    
-    }, [idsMod, idsTip, idsSec])
-
-    useEffect(() => {      
+        setCurrentPage(1);
         if(atualiza === 1) {
             axios({
                 method: 'get',    
-                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/per_page=${perPageDefault}&page=${currentPage}`,
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
+            }).then(function(response) {
+                if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+                    console.log('filtro: 1')
+                    const dados: ServicesProps[] = response.data;
+                    const filtrados = dados.filter(item => item.ativo === "1");
+                    setServicos(filtrados);
+                    setPages(Number(response.headers["x-wp-totalpages"]));
+                }else {
+                    if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+                        console.log('filtro: 2')
+                        const dados: ServicesProps[] = response.data;
+                            const filtrados = dados.filter((item) => {
+                            return item.ativo === "1" && 
+                                   item.persona.some(p => p.id === Number(idsMod));
+                            });                      
+                            setServicos(filtrados);                        
+                            setPages(Number(response.headers["x-wp-totalpages"]));
+                    }else {
+                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
+                            console.log('filtro: 3')
+                            const dados: ServicesProps[] = response.data;
+                            const filtrados = dados.filter((item) => {
+                                return item.ativo === "1" && item.persona.some(p => p.id === Number(idsMod)) && item.secretaria.some(s => s.id === Number(idsSec));
+                            });                      
+                            setServicos(filtrados);  
+                            setPages(Number(response.headers["x-wp-totalpages"]));
+                        }else {
+                            if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
+                                console.log('filtro: 4')
+                                const dados: ServicesProps[] = response.data;
+                                const filtrados = dados.filter((item) => {
+                                    return item.ativo === "1" && 
+                                           item.persona.some(p => p.id === Number(idsMod)) && 
+                                           item.secretaria.some(s => s.id === Number(idsSec)) && 
+                                           item.tema.some(t => t.id === Number(idsTip));
+                                });                      
+                                setServicos(filtrados);  
+                                setPages(Number(response.headers["x-wp-totalpages"]));
+                            }else {
+                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
+                                    console.log('filtro: 5')
+                                    const dados: ServicesProps[] = response.data;
+                                    const filtrados = dados.filter((item) => {
+                                    return item.ativo === "1" && 
+                                           item.secretaria.some(s => s.id === Number(idsSec)) && 
+                                           item.tema.some(t => t.id === Number(idsTip));
+                                    });                      
+                                    setServicos(filtrados);
+                                    setPages(Number(response.headers["x-wp-totalpages"]));
+                                }else {
+                                    if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
+                                        console.log('filtro: 6')
+                                        const dados: ServicesProps[] = response.data;
+                                        const filtrados = dados.filter((item) => {
+                                        return item.ativo === "1" && 
+                                               item.secretaria.some(s => s.id === Number(idsSec)); 
+                                        });                      
+                                        setServicos(filtrados); 
+                                        setPages(Number(response.headers["x-wp-totalpages"]));
+                                    }else {
+                                        if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
+                                            console.log('filtro: 7')
+                                            const dados: ServicesProps[] = response.data;
+                                            const filtrados = dados.filter((item) => {
+                                            return item.ativo === "1" && 
+                                                   item.tema.some(t => t.id === Number(idsTip));
+                                            });                      
+                                            setServicos(filtrados);  
+                                            setPages(Number(response.headers["x-wp-totalpages"]));
+                                        }else {
+                                            if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
+                                                console.log('filtro: 8') 
+                                                const dados: ServicesProps[] = response.data;
+                                                const filtrados = dados.filter((item) => {
+                                                return item.ativo === "1" && 
+                                                       item.persona.some(p => p.id === Number(idsMod)) && 
+                                                       item.tema.some(t => t.id === Number(idsTip));
+                                                });                      
+                                                setServicos(filtrados); 
+                                                setPages(Number(response.headers["x-wp-totalpages"]));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).catch(function(error) {
+                console.log(error)
+            })
+        }
+    }, [idsMod, idsTip, idsSec, search])
+    
+    useEffect(() => {     
+        if(atualiza === 1) {
+            axios({
+                method: 'get',    
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
+            }).then(function(response) {
+                if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+                    console.log('filtro: 1')
+                    const dados: ServicesProps[] = response.data;
+                    const filtrados = dados.filter(item => item.ativo === "1");
+                    setServicos(filtrados);
+                    setPages(Number(response.headers["x-wp-totalpages"]));
+                }else {
+                    if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+                        console.log('filtro: 2')
+                        const dados: ServicesProps[] = response.data;
+                            const filtrados = dados.filter((item) => {
+                            return item.ativo === "1" && 
+                                   item.persona.some(p => p.id === Number(idsMod));
+                            });                      
+                            setServicos(filtrados);                        
+                            setPages(Number(response.headers["x-wp-totalpages"]));
+                    }else {
+                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
+                            console.log('filtro: 3')
+                            const dados: ServicesProps[] = response.data;
+                            const filtrados = dados.filter((item) => {
+                                return item.ativo === "1" && item.persona.some(p => p.id === Number(idsMod)) && item.secretaria.some(s => s.id === Number(idsSec));
+                            });                      
+                            setServicos(filtrados);  
+                            setPages(Number(response.headers["x-wp-totalpages"]));
+                        }else {
+                            if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
+                                console.log('filtro: 4')
+                                const dados: ServicesProps[] = response.data;
+                                const filtrados = dados.filter((item) => {
+                                    return item.ativo === "1" && 
+                                           item.persona.some(p => p.id === Number(idsMod)) && 
+                                           item.secretaria.some(s => s.id === Number(idsSec)) && 
+                                           item.tema.some(t => t.id === Number(idsTip));
+                                });                      
+                                setServicos(filtrados);  
+                                setPages(Number(response.headers["x-wp-totalpages"]));
+                            }else {
+                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
+                                    console.log('filtro: 5')
+                                    const dados: ServicesProps[] = response.data;
+                                    const filtrados = dados.filter((item) => {
+                                    return item.ativo === "1" && 
+                                           item.secretaria.some(s => s.id === Number(idsSec)) && 
+                                           item.tema.some(t => t.id === Number(idsTip));
+                                    });                      
+                                    setServicos(filtrados);
+                                    setPages(Number(response.headers["x-wp-totalpages"]));
+                                }else {
+                                    if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
+                                        console.log('filtro: 6')
+                                        const dados: ServicesProps[] = response.data;
+                                        const filtrados = dados.filter((item) => {
+                                        return item.ativo === "1" && 
+                                               item.secretaria.some(s => s.id === Number(idsSec)); 
+                                        });                      
+                                        setServicos(filtrados); 
+                                        setPages(Number(response.headers["x-wp-totalpages"]));
+                                    }else {
+                                        if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
+                                            console.log('filtro: 7')
+                                            const dados: ServicesProps[] = response.data;
+                                            const filtrados = dados.filter((item) => {
+                                            return item.ativo === "1" && 
+                                                   item.tema.some(t => t.id === Number(idsTip));
+                                            });                      
+                                            setServicos(filtrados);  
+                                            setPages(Number(response.headers["x-wp-totalpages"]));
+                                        }else {
+                                            if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
+                                                console.log('filtro: 8') 
+                                                const dados: ServicesProps[] = response.data;
+                                                const filtrados = dados.filter((item) => {
+                                                return item.ativo === "1" && 
+                                                       item.persona.some(p => p.id === Number(idsMod)) && 
+                                                       item.tema.some(t => t.id === Number(idsTip));
+                                                });                      
+                                                setServicos(filtrados); 
+                                                setPages(Number(response.headers["x-wp-totalpages"]));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }).catch(function(error) {
+                console.log(error)
+            })
+        }
+    }, [currentPage])
+
+    useEffect(() => {     
+        if(atualiza === 1) {
+            axios({
+                method: 'get',    
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
             }).then(function(response) {
                 setBusca(response.data)
                 const regex = new RegExp(search, "i");
-                const resultado = busca.filter(item => regex.test(item.descricao));    
+                const resultado = busca.filter(item => regex.test(item.nome));    
                 setServicos(resultado)    
                 setPages(Number(response.headers["x-wp-totalpages"]));       
             }).catch(function(error) {
@@ -592,12 +478,12 @@ export default function Home() {
                                             Temas
                                             <span className="control">{clickedTip ? "—" : "+"} </span>
                                         </button>
-                                        <div className={`answer_wrapper ${clickedTip ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                        <div className={`answer_wrapper ${clickedTip ? "active h-96 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                             <div className={`answer ${clickedTip ? "active" : "hidden"}` }>
                                                 <div className="h-auto">
                                                     {tipos.map((item) => (
                                                     <div key={item.id} className='flex flex-row justify-between items-center w-full mb-2'>
-                                                        <span className="text-md font-semibold">{item.name}</span>
+                                                        <span className="text-md font-semibold">{item.nome}</span>
                                                         <input
                                                             className="cursor-pointer"
                                                             type="checkbox"
@@ -707,7 +593,7 @@ export default function Home() {
                                                     <div className="h-auto">
                                                         {tipos.map((item) => (
                                                         <div key={item.id} className='flex flex-row justify-between items-center w-full mb-2'>
-                                                            <span className="text-md font-semibold">{item.name}</span>
+                                                            <span className="text-md font-semibold">{item.nome}</span>
                                                             <input
                                                                 className="cursor-pointer"
                                                                 type="checkbox"
@@ -778,48 +664,68 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className='flex bg-[#F3F3F3] dark:bg-gray-900 w-full h-auto md:pr-20'>
+                    <div className='flex bg-[#F3F3F3] dark:bg-gray-900 w-full h-auto md:pr-20 '>
                         <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800 '> 
                             <div className='w-full h-auto mr-2 dark:bg-gray-800 '> 
-                                <div className='flex flex-col w-full h-full text-black'>
+                                <div className='flex flex-col w-full h-4/5 text-black'>
                                     <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
                                     {servicos?.map((item, idx ) => (
-                                        <div key={idx} className='bg-[#fff7ed] h-64 mt-1 mb-3 rounded-lg overflow-hidden shadow-lg dark:hover:bg-black '> 
-                                            <div className="flex flex-row items-start px-2 py-0 mt-1 ">
-                                                <div className="flex border border-black w-auto h-auto rounded-lg items-start p-2">
-                                                    {(item.tema || []).map((tema, lnh) => (
-                                                        <Image key={lnh} src={tema.icone} alt="Descrição da imagem" width={32} height={32} className ='w-8 h-8' />
-                                                    ))}                                                 
+                                        <div key={idx}>
+                                            {(item.tema || []).map((tema, lnh) => (
+                                                <div key={lnh} className='bg-white h-36 mt-1 mb-1 rounded-lg overflow-hidden shadow-lg'>
+                                                    <div className="flex flex-row w-full h-24 px-2 py-0 mt-1 ">
+                                                        <div className={ tema.nome === 'Tutoriais' ? "bg-[#008C3D]/40 rounded hover:bg-[#008C3D]/40 flex items-center justify-center border border-black w-[15%] h-16" :   
+                                                            tema.nome === 'Fiscalização' ? "bg-[#FFF402]/40 rounded hover:bg-[#FFF402]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Servidor' ? "bg-[#FF0000]/40 rounded hover:bg-[#FF0000]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Procon' ? "bg-[#0094FF]/40 rounded hover:bg-[#0094FF]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Agendamento' ? "bg-[#7000FF]/40 rounded hover:bg-[#7000FF]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Trabalho' ? "bg-[#fdba74]/40 rounded hover:bg-[#fdba74]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Esportes' ? "bg-[#1d4ed8]/40 rounded hover:bg-[#1d4ed8]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Defesa Civil' ? "bg-[#0f766e]/40 rounded hover:bg-[#0f766e]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Cultura' ? "bg-[#7e22ce]/40 rounded hover:bg-[#7e22ce]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Segurança' ? "bg-[#b91c1c]/40 rounded hover:bg-[#b91c1c]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Impostos' ? "bg-[#fbbf24]/40 rounded hover:bg-[#fbbf24]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Empresas' ? "bg-[#bef264]/40 rounded hover:bg-[#bef264]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Edificações' ? "bg-[#78350f]/40 rounded hover:bg-[#78350f]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Urbanismo' ? "bg-[#064e3b]/40 rounded hover:bg-[#064e3b]/40 flex items-center justify-center border border-black w-[15%] h-16" : 
+                                                            tema.nome === 'Zeladoria' ? "bg-[#155e75]/40 rounded hover:bg-[#155e75]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Saúde' ? "bg-[#dc2626]/40 rounded hover:bg-[#dc2626]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Meio Ambiente' ? "bg-[#4ade80]/40 rounded hover:bg-[#4ade80]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Mobilidade' ? "bg-[#be185d]/40 rounded hover:bg-[#be185d]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Educação' ? "bg-[#075985]/40 rounded hover:bg-[#075985]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Licitações' ? "bg-[#064e3b]/40 rounded hover:bg-[#064e3b]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Animais' ? "bg-[#a16207]/40 rounded hover:bg-[#a16207]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Assistência Social' ? "bg-[#f43f5e]/40 rounded hover:bg-[#f43f5e]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Vigilância Sanitária' ? "bg-[#3b0764]/40 rounded hover:bg-[#3b0764]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                            tema.nome === 'Transparência' ? "bg-[#f8fafc]/40 rounded hover:bg-[#f8fafc]/40 flex items-center justify-center border border-black w-[15%] h-16" :
+                                                                "bg-[#d7dddc]/40 rounded hover:bg-[#d7dddc]/40 flex items-center justify-center border border-black w-[15%] h-16" } >                                                          
+                                                            <Image key={lnh} src={tema.icone} alt="Descrição da imagem" width={32} height={32} className ='w-10 h-10' />
+                                                        </div>
+                                                        <div className="flex flex-col justify-center w-[85%] h-14 px-2 mt-1">
+                                                            <div className="text-[14px] font-bold mb-0">{item.nome}</div>
+                                                        </div>                                  
+                                                    </div>                                                    
+                                                    <div className="flex flex-row items-center justify-between w-full p-2">
+                                                        <Link href={`/SrvDetalhes/${item.id}`}>
+                                                            <div className='flex items-center justify-center bg-white h-6 w-32 rounded-lg hover:bg-blue-600 border border-blue-700 text-blue-600 text-[11px] hover:text-white'>
+                                                                <span className='px-2 font-semibold'>Mais informações</span>
+                                                            </div>  
+                                                        </Link>
+                                                        <Link href={`${item.acesso}`}>
+                                                            <div className={!item.acesso ? "hidden" : 'flex items-center justify-center bg-blue-950 h-6 w-32 rounded-lg hover:bg-blue-600 border border-blue-700 text-white text-[11px] hover:text-white'}>
+                                                                <span className='px-2 font-semibold'>Acesso online</span>
+                                                            </div>  
+                                                        </Link>
+                                                    </div>                                           
                                                 </div>
-                                                <div className="flex flex-col h-14 items-start px-2 py-1">
-                                                    <div className="text-base font-bold mb-0">{item.nome}</div>
-                                                </div>                                  
-                                            </div>                                                                                                         
-                                            <div className="flex flex-row items-start justify-between px-2 ">
-                                                <div className="flex flex-col items-start px-2 py-2 h-36">
-                                                    <span className='text-[12px] font-bold'>Objetivo</span>
-                                                    <div className="text-[14px] mb-0" dangerouslySetInnerHTML={{ __html: item.descricao }} />
-                                                </div>                
-                                            </div>  
-                                            <div className="flex flex-row items-center justify-between w-full px-2">
-                                                <Link href={`/SrvDetalhes/${item.id}`}>
-                                                    <div className='flex items-center justify-center bg-white h-10 w-40 rounded-lg hover:bg-blue-950 border border-blue-600 text-blue-600 text-[12px] hover:text-white'>
-                                                        <span className='px-2 font-semibold'>Detalhes do Serviço</span>
-                                                    </div>  
-                                                </Link>
-                                                <Link href={`${item.acesso}`}>
-                                                    <div className={!item.acesso ? "hidden" : 'flex items-center justify-center bg-blue-600 h-10 w-40 rounded-lg hover:bg-blue-950 border border-blue-600 text-white text-[12px] hover:text-white'}>
-                                                        <span className='px-2 font-semibold'>Acesse o serviço online</span>
-                                                    </div>  
-                                                </Link>
-                                            </div>                                           
-                                        </div>                    
+                                            ))}
+                                        </div>                        
                                     ))}
                                     </div>
                                 </div>
                                 <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 rounded-lg '> 
                                     <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>   
-                                        {newPage}                              
+                                       {currentPage}                                     
                                     </div>
                                     <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
                                         <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
@@ -836,3 +742,123 @@ export default function Home() {
         </div>
     )
 }
+
+// <div key={idx} className='bg-[#fff7ed] h-64 mt-1 mb-3 rounded-lg overflow-hidden shadow-lg dark:hover:bg-black '> 
+// <div className="flex flex-row items-start justify-between px-2 ">
+//      <div className="flex flex-col items-start px-2 py-2 h-36">
+//            <span className='text-[12px] font-bold mt-1'>Objetivo</span>
+//            <div className="text-[12px] mb-0" dangerouslySetInnerHTML={{ __html: item.descricao }} />
+//            </div>                
+//        </div>
+
+
+
+/*
+    useEffect(() => {
+        setCurrentPage(1);      
+        if(atualiza === 1) {
+            if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+                console.log('filtro: 1')
+                axios({
+                    method: 'get',    
+                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
+                }).then(function(response) {
+                    setServicos(response.data)
+                    setPages(Number(response.headers["x-wp-totalpages"]));
+                }).catch(function(error) {
+                    console.log(error)
+                })
+            }else 
+                if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+                    console.log('filtro: 2')
+                    axios({
+                        method: 'get',    
+                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
+                    }).then(function(response) {
+                        setServicos(response.data)
+                        setPages(Number(response.headers["x-wp-totalpages"]));
+                    }).catch(function(error) {
+                        console.log(error)
+                    })
+                }else {
+                    if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
+                        console.log('filtro: 3')
+                        axios({
+                            method: 'get',    
+                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                        }).then(function(response) {
+                            setServicos(response.data)
+                            setPages(Number(response.headers["x-wp-totalpages"]));
+                        }).catch(function(error) {
+                            console.log(error)
+                        })
+                    }else {
+                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
+                            console.log('filtro: 4')
+                            axios({
+                                method: 'get',    
+                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&secretaria=${idsSec}&tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                            }).then(function(response) {
+                                setServicos(response.data)
+                                setPages(Number(response.headers["x-wp-totalpages"]));
+                            }).catch(function(error) {
+                                console.log(error)
+                            })
+                        }else {
+                            if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
+                                console.log('filtro: 5')
+                                axios({
+                                    method: 'get',    
+                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?secretaria=${idsSec}&tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                }).then(function(response) {
+                                    setServicos(response.data)
+                                    setPages(Number(response.headers["x-wp-totalpages"]));
+                                }).catch(function(error) {
+                                    console.log(error)
+                                })
+                            }else {
+                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
+                                    console.log('filtro: 6')
+                                    axios({
+                                        method: 'get',    
+                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
+                                    }).then(function(response) {
+                                        setServicos(response.data)
+                                        setPages(Number(response.headers["x-wp-totalpages"]));
+                                    }).catch(function(error) {
+                                        console.log(error)
+                                    })
+                                }else {
+                                    if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
+                                        console.log('filtro: 7')
+                                        axios({
+                                            method: 'get',    
+                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                        }).then(function(response) {
+                                            setServicos(response.data)
+                                            setPages(Number(response.headers["x-wp-totalpages"]));
+                                        }).catch(function(error) {
+                                            console.log(error)
+                                        })
+                                    }else {
+                                        if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
+                                            console.log('filtro: 8')
+                                            axios({
+                                                method: 'get',    
+                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
+                                            }).then(function(response) {
+                                                setServicos(response.data)
+                                                setPages(Number(response.headers["x-wp-totalpages"]));
+                                            }).catch(function(error) {
+                                                console.log(error)
+                                            })
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } 
+                } 
+            }    
+    }, [idsMod, idsTip, idsSec])
+    */
