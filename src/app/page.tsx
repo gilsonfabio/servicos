@@ -190,11 +190,11 @@ export default function Home() {
     useEffect(() => {
         setCurrentPage(1);
         
-        let perPageDefault = 0;
+        const perPageDefault = 0;
         if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-           perPageDefault = 12;
+           const perPageDefault = 12;
         }else{
-           perPageDefault = 50;
+           const perPageDefault = 50;
         }
 
         if(atualiza === 1) {
@@ -299,7 +299,7 @@ export default function Home() {
     }, [idsMod, idsTip, idsSec])
     
     useEffect(() => {     
-        let perPageDefault = 12;
+        const perPageDefault = 12;
 
         if(atualiza === 1) {
             axios({
@@ -400,7 +400,7 @@ export default function Home() {
     }, [currentPage])
 
     useEffect(() => {             
-        let perPageDefault = 50;
+        const perPageDefault = 50;
         if(atualiza === 1) {
             axios({
                 method: 'get',    
