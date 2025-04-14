@@ -140,7 +140,7 @@ export default function Home() {
         testeJson.per_page = perPageDefault;
 
         console.log(testeJson);
-
+        
         axios({
             method: 'get',    
             url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,            
@@ -725,7 +725,7 @@ export default function Home() {
                                 </div>
                                 <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 rounded-lg '> 
                                     <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>   
-                                       {currentPage}                                     
+                                       {currentPage}-{newPage}                                     
                                     </div>
                                     <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
                                         <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
