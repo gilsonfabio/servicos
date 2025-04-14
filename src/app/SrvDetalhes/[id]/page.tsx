@@ -92,7 +92,7 @@ export default function Modal({ params }: { params: Promise<{ id: string }> }) {
             <span className='text-sm md:text-base font-bold'>Voltar</span>
           </button>
           <div className={!acesso ? "hidden" : ""}>
-            <Link href={`${acesso}`}>
+            <Link href={`${acesso}`} target="_blank" rel="noopener noreferrer">
               <div className='flex items-center justify-center bg-[#172554] h-10 w-52 rounded-lg hover:bg-white hover:text-blue-600 border border-blue-800'>
                 <span className='px-2 text-white hover:text-blue-600 font-semibold '>Acesse o serviço online</span>
               </div>  

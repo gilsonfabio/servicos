@@ -51,7 +51,7 @@ export default function Navbar({
 
   return (
     <div>
-      <div className={`flex flex-row items-center justify-between w-full h-24 bg-blue-950 dark:bg-black text-white px-2 md:px-20 z-10`}>
+      <div className={`flex flex-row items-center justify-between w-full h-24 bg-blue-950 text-white px-2 md:px-20 z-10`}>
         <Link href="https://www.aparecida.go.gov.br/" passHref >
           <Image src={logoBarra} alt="Logo Aparecida" className="w-56 md:w-72 md:h-18" />
         </Link>

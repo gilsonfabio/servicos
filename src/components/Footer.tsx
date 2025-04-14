@@ -15,7 +15,7 @@ interface FooterProps {
 
 const Footer = ({ bgColor}: FooterProps) => {
     return (
-        <div className={`${bgColor} dark:bg-black dark:text-white p-2 grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2`}>  
+        <div className={`${bgColor} p-2 grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-2`}>  
             <div className='w-auto h-auto flex justify-center items-center col-span-1 p-2 mt-3 '>
                 <Link href="https://www.aparecida.go.gov.br/" >
                     <Image className= "w-52 h-40 hover:cursor-pointer" src={imgBandeira} alt="" /> 

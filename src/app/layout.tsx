@@ -4,10 +4,11 @@ import { FaUniversalAccess } from 'react-icons/fa';
 import { FaSitemap } from 'react-icons/fa';
 import Image from 'next/image'
 
-import logoAcesso from '../../public/acesso-informacao.png';
+import logoAcesso from '@/assets/images/acesso-informacao.png';
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { Providers } from './providers';
 
 export default function RootLayout({
   children,
@@ -37,9 +38,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className=''>
-        <Navbar bgColor={navbarBg} button={btnAce} showButton={showBtnAce} btnMap={btnMap} showBtnMap={showBtnMap} btnInf={btnInf} showBtnInf={showBtnInf} /> 
-          {children}
-        <Footer bgColor={navbarBg} /> 
+        <Providers>
+          <Navbar bgColor={navbarBg} button={btnAce} showButton={showBtnAce} btnMap={btnMap} showBtnMap={showBtnMap} btnInf={btnInf} showBtnInf={showBtnInf} /> 
+            {children}
+          <Footer bgColor={navbarBg} /> 
+        </Providers>
       </body>
     </html>
   );

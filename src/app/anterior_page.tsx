@@ -457,24 +457,24 @@ export default function Home() {
     }
     
     return (
-        <div className='flex flex-col w-full h-auto bg-gray-200 '>
+        <div className='flex flex-col w-full h-auto bg-gray-200 dark:bg-black'>
             <div className='flex flex-col md:flex-row w-full min-h-[90%]'>
                 <div className='flex flex-col justify-center md:justify-normal md:w-[25%] w-full h-16 md:h-auto bg-gray-300'>
                     <div className='hidden md:block pl-20'>
-                        <span className="text-[#2563eb] text-lg font-semibold ml-3 md:ml-0">
+                        <span className="text-[#2563eb] dark:text-white text-lg font-semibold ml-3 md:ml-0">
                             Filtro de Serviços
                         </span>
                         <div className="hidden md:block">
                             <div className='w-[80%] mt-0 mb-3 z-40'>
                                 <div>
                                     <li className={`accordion_item ${clicked ? "active mb-2" : ""} list-none`}>
-                                        <button className={clicked ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                        "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                        <button className={clicked ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                        "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                             onClick={handleToggle}>
                                             Público-alvo
                                             <span className="control">{clicked ? "—" : "+"} </span>
                                         </button>
-                                        <div className={`answer_wrapper ${clicked ? "active h-40 p-2 mb-5 bg-gray-200 border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                        <div className={`answer_wrapper ${clicked ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                             <div className={`answer ${clicked ? "active" : "hidden"}` }>
                                                 <div className="h-auto">
                                                     {modalidades.map((item) => (
@@ -498,13 +498,13 @@ export default function Home() {
                             <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                                 <div>
                                     <li className={`accordion_item ${clickedTip ? "active mb-2" : ""} list-none`}>
-                                        <button className={clickedTip ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                            "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                        <button className={clickedTip ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                            "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                             onClick={handleToggleTip}>
                                             Categoria
                                             <span className="control">{clickedTip ? "—" : "+"} </span>
                                         </button>
-                                        <div className={`answer_wrapper ${clickedTip ? "active h-96 p-2 mb-5 bg-gray-200 border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                        <div className={`answer_wrapper ${clickedTip ? "active h-96 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                             <div className={`answer ${clickedTip ? "active" : "hidden"}` }>
                                                 <div className="h-auto">
                                                     {tipos.map((item) => (
@@ -528,13 +528,13 @@ export default function Home() {
                             <div className='w-[80%] mt-0 mb-3 z-40 ml-3 md:ml-0'>
                                 <div>
                                     <li className={`accordion_item ${clickedSec ? "active mb-2" : ""} list-none`}>
-                                        <button className={clickedSec ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                            "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                        <button className={clickedSec ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                            "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                             onClick={handleToggleSec}>
                                             Orgão Responsável
                                             <span className="control">{clickedSec ? "—" : "+"} </span>
                                         </button>
-                                        <div className={`answer_wrapper ${clickedSec ? "active h-40 p-2 mb-5 bg-gray-200 border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                        <div className={`answer_wrapper ${clickedSec ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                             <div className={`answer ${clickedSec ? "active" : "hidden"}` }>
                                                 <div className="h-auto">
                                                     {secretarias.map((item) => (
@@ -562,7 +562,7 @@ export default function Home() {
                             {/* Botão para abrir o menu */}
                             <button 
                                 onClick={() => setIsOpen(!isOpen)} 
-                                className="p-2 ml-2 bg-[#2563eb] text-white rounded-md focus:outline-none"
+                                className="p-2 ml-2 bg-[#2563eb] dark:bg-black text-white rounded-md focus:outline-none"
                             >
                                 {isOpen ? <X size={24} /> : <Menu size={24} />}
                             </button>                            
@@ -578,13 +578,13 @@ export default function Home() {
                                 <div className='w-[80%] mt-0 mb-2 z-40 ml-3 md:ml-0'>
                                     <div>
                                         <li className={`accordion_item ${clicked ? "active mb-2" : ""} list-none`}>
-                                            <button className={clicked ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                                "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                            <button className={clicked ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                                "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                                 onClick={handleToggle}>
                                                 Público-alvo
                                                 <span className="control">{clicked ? "—" : "+"} </span>
                                             </button>
-                                            <div className={`answer_wrapper ${clicked ? "active h-40 p-2 mb-5 bg-gray-200 border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                            <div className={`answer_wrapper ${clicked ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                                 <div className={`answer ${clicked ? "active" : "hidden"}` }>
                                                     <div className="h-auto">
                                                         {modalidades.map((item) => (
@@ -608,13 +608,13 @@ export default function Home() {
                                 <div className='w-[80%] mt-0 mb-2 z-40 ml-3 md:ml-0'>
                                     <div>
                                         <li className={`accordion_item ${clickedTip ? "active mb-2" : ""} list-none`}>
-                                            <button className={clickedTip ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                                "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                            <button className={clickedTip ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                                "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                                 onClick={handleToggleTip}>
                                                 Categoria
                                                 <span className="control">{clickedTip ? "—" : "+"} </span>
                                             </button>
-                                            <div className={`answer_wrapper ${clickedTip ? "active h-40 p-2 mb-5 bg-gray-200 border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                            <div className={`answer_wrapper ${clickedTip ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                                 <div className={`answer ${clickedTip ? "active" : "hidden"}` }>
                                                     <div className="h-auto">
                                                         {tipos.map((item) => (
@@ -638,13 +638,13 @@ export default function Home() {
                                 <div className='w-[80%] mt-0 mb-2 z-40 ml-3 md:ml-0'>
                                     <div>
                                         <li className={`accordion_item ${clickedSec ? "active mb-2" : ""} list-none`}>
-                                            <button className={clickedSec ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
-                                                "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
+                                            <button className={clickedSec ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
+                                                "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                                 onClick={handleToggleSec}>
                                                 Orgão Responsável
                                                 <span className="control">{clickedSec ? "—" : "+"} </span>
                                             </button>
-                                            <div className={`answer_wrapper ${clickedSec ? "active h-40 p-2 mb-5 bg-gray-200 border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
+                                            <div className={`answer_wrapper ${clickedSec ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
                                                 <div className={`answer ${clickedSec ? "active" : "hidden"}` }>
                                                     <div className="h-auto">
                                                         {secretarias.map((item) => (
@@ -670,11 +670,11 @@ export default function Home() {
                     </div>
                 </div>
                 <div className='flex flex-col md:w-[80%] w-full h-auto bg-[#F3F3F3]'>
-                    <div className='flex flex-col bg-[#e2ebf7] w-full h-auto mr-20'>
+                    <div className='flex flex-col bg-[#e2ebf7] dark:bg-white w-full h-auto mr-20'>
                         <div className='flex items-center justify-center md:w-full md:pr-20 mt-2 mb-2'>
                             <div className='flex flex-row justify-start items-center w-full h-full p-2'>
                                 <input type="search" 
-                                    className="form-control relative z-10 flex-auto min-w-0 block w-full px-3 py-3.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none" 
+                                    className="form-control relative z-10 flex-auto min-w-0 block w-full px-3 py-3.5 text-base font-normal text-gray-700 bg-white dark:bg-black dark:text-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none" 
                                     placeholder="O que você procura?" 
                                     aria-label="Search" 
                                     aria-describedby="button-addon3" 
@@ -690,9 +690,9 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className='flex-col bg-[#F3F3F3] w-full h-[80%] md:pr-20 '>
-                        <div className='flex flex-col justify-between w-full h-[90%] text-black p-2 bg-[#F3F3F3]'> 
-                            <div className='w-full min-h-[70%] mr-2'> 
+                    <div className='flex-col bg-[#F3F3F3] dark:bg-gray-900 w-full h-[80%] md:pr-20 '>
+                        <div className='flex flex-col justify-between w-full h-[90%] text-black p-2 bg-[#F3F3F3] dark:bg-gray-800 '> 
+                            <div className='w-full min-h-[70%] mr-2 dark:bg-gray-800 '> 
                                 <div className='flex flex-col w-full h-full text-black'>
                                     <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
                                     {servicos?.map((item, idx ) => (
@@ -751,8 +751,8 @@ export default function Home() {
                                 </div>                                
                             </div>                            
                         </div>   
-                        <div className='flex-col w-full p-2 md:px-2'>
-                            <div className='flex flex-row justify-between w-full text-black p-2 bg-gray-300 border-t-2 border-gray-200 rounded-lg '> 
+                        <div className='flex-col dark:bg-gray-900 w-full p-2 md:px-2'>
+                            <div className='flex flex-row justify-between w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 rounded-lg '> 
                                 <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 text-gray-300 '>   
                                     {currentPage}-{newPage}                                     
                                 </div>
@@ -764,7 +764,7 @@ export default function Home() {
                     </div>                                 
                 </div>                
             </div>
-            <div className='bg-white md:ml-20 md:mr-20 md:mt-10 md:mb-3 rounded-lg'>
+            <div className='bg-white dark:bg-black md:ml-20 md:mr-20 md:mt-10 md:mb-3 rounded-lg'>
                 <CardOuvidoria />
             </div> 
         </div>
