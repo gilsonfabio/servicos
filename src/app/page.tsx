@@ -140,6 +140,7 @@ export default function Home() {
         testeJson.per_page = perPageDefault;
 
         console.log(testeJson);
+        setPagDefault(12);
         
         axios({
             method: 'get',    
