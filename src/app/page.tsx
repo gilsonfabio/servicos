@@ -23,7 +23,7 @@ type TemasProps = {
 
 type SecretariaProps = {
     "id": number;
-    "slug": string;
+    "nome": string;
 }
 
 type Localidade = {
@@ -89,7 +89,9 @@ export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
     const [pages, setPages] = useState(0);
     const [pagDefault, setPagDefault] = useState(0);
+    
     const perPageDefault = 12;
+    
     const [newPage, setNewPage] = useState(0);
 
     const [clicked, setClicked] = useState(true);
@@ -141,19 +143,29 @@ export default function Home() {
 
         console.log(testeJson);
         setPagDefault(12);
-        
+        //setPerPagDefault(12);
+                
         axios({
             method: 'get',    
-            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,            
+            url: `https://aparecida.go.gov.br/wp-json/wp/v2/servicos?ativo=1&per_page=${perPageDefault}&page=${currentPage}&_fields=id,nome,icone,slug,ativo,acesso,tema,persona,secretaria`,            
         }).then(function(response) {
             const dados: ServicesProps[] = response.data;
             const filtrados = dados.filter(item => item.ativo === "1");
-            setServicos(filtrados);
+            setServicos(filtrados);            
             setPages(Number(response.headers["x-wp-totalpages"]));
         }).catch(function(error) {
             console.log(error)
         })
-      
+        
+        /*
+        api.get("/servicos?_fields=id,slug,nome,acesso,tema").then(res => {
+            setServicos(res.data)     
+            setPages(Number(res.headers["x-wp-totalpages"]));      
+        }).catch((err) => {
+            console.error("ops! ocorreu um erro serviços" + err);
+        });
+        */
+
         api.get("/personas?_fields=id,slug,nome").then(res => {
             setModalidades(res.data)           
         }).catch((err) => {
@@ -166,7 +178,7 @@ export default function Home() {
             console.error("ops! ocorreu um erro temas" + err);
         }); 
 
-        api.get("/secretaria?per_page=50").then(resp => {
+        api.get("/secretaria?per_page=50&_fields=id,nome").then(resp => {
             setSecretarias(resp.data)           
         }).catch((err) => {
             console.error("ops! ocorreu um erro secretarias" + err);
@@ -177,10 +189,18 @@ export default function Home() {
 
     useEffect(() => {
         setCurrentPage(1);
+        
+        let perPageDefault = 0;
+        if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
+           perPageDefault = 12;
+        }else{
+           perPageDefault = 50;
+        }
+
         if(atualiza === 1) {
             axios({
                 method: 'get',    
-                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?ativo=1&per_page=${perPageDefault}&page=${currentPage}&_fields=id,nome,icone,slug,ativo,acesso,tema,persona,secretaria`,
             }).then(function(response) {
                 if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
                     console.log('filtro: 1')
@@ -194,7 +214,8 @@ export default function Home() {
                         const dados: ServicesProps[] = response.data;
                             const filtrados = dados.filter((item) => {
                             return item.ativo === "1" && 
-                                   item.persona.some(p => p.id === Number(idsMod));
+                                Array.isArray(item.persona) &&
+                                item.persona.some(p => p.id === Number(idsMod));
                             });                      
                             setServicos(filtrados);                        
                             setPages(Number(response.headers["x-wp-totalpages"]));
@@ -203,7 +224,9 @@ export default function Home() {
                             console.log('filtro: 3')
                             const dados: ServicesProps[] = response.data;
                             const filtrados = dados.filter((item) => {
-                                return item.ativo === "1" && item.persona.some(p => p.id === Number(idsMod)) && item.secretaria.some(s => s.id === Number(idsSec));
+                                return item.ativo === "1" && 
+                                       item.persona.some(p => p.id === Number(idsMod)) && 
+                                       item.secretaria.some(s => s.id === Number(idsSec));
                             });                      
                             setServicos(filtrados);  
                             setPages(Number(response.headers["x-wp-totalpages"]));
@@ -273,13 +296,15 @@ export default function Home() {
                 console.log(error)
             })
         }
-    }, [idsMod, idsTip, idsSec, search])
+    }, [idsMod, idsTip, idsSec])
     
     useEffect(() => {     
+        let perPageDefault = 12;
+
         if(atualiza === 1) {
             axios({
                 method: 'get',    
-                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?ativo=1&per_page=${perPageDefault}&page=${currentPage}&_fields=id,nome,icone,slug,ativo,acesso,tema,persona,secretaria`,
             }).then(function(response) {
                 if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
                     console.log('filtro: 1')
@@ -374,11 +399,12 @@ export default function Home() {
         }
     }, [currentPage])
 
-    useEffect(() => {     
+    useEffect(() => {             
+        let perPageDefault = 50;
         if(atualiza === 1) {
             axios({
                 method: 'get',    
-                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
+                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?ativo=1&per_page=${perPageDefault}&page=${currentPage}&_fields=id,nome,icone,slug,ativo,acesso,tema,persona,secretaria`,
             }).then(function(response) {
                 setBusca(response.data)
                 const regex = new RegExp(search, "i");
@@ -433,7 +459,7 @@ export default function Home() {
     
     return (
         <div className='flex flex-col w-full h-auto bg-gray-200 dark:bg-black'>
-            <div className='flex flex-col md:flex-row w-full h-auto'>
+            <div className='flex flex-col md:flex-row w-full min-h-[90%]'>
                 <div className='flex flex-col justify-center md:justify-normal md:w-[25%] w-full h-16 md:h-auto bg-gray-300'>
                     <div className='hidden md:block pl-20'>
                         <span className="text-[#2563eb] dark:text-white text-lg font-semibold ml-3 md:ml-0">
@@ -446,7 +472,7 @@ export default function Home() {
                                         <button className={clicked ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
                                         "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                             onClick={handleToggle}>
-                                            Persona
+                                            Público-alvo
                                             <span className="control">{clicked ? "—" : "+"} </span>
                                         </button>
                                         <div className={`answer_wrapper ${clicked ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
@@ -476,7 +502,7 @@ export default function Home() {
                                         <button className={clickedTip ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
                                             "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                             onClick={handleToggleTip}>
-                                            Temas
+                                            Categoria
                                             <span className="control">{clickedTip ? "—" : "+"} </span>
                                         </button>
                                         <div className={`answer_wrapper ${clickedTip ? "active h-96 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
@@ -514,7 +540,7 @@ export default function Home() {
                                                 <div className="h-auto">
                                                     {secretarias.map((item) => (
                                                     <div key={item.id} className='flex flex-row justify-between items-center w-full mb-2'>
-                                                        <span className="text-md font-semibold">{item.slug}</span>
+                                                        <span className="text-md font-semibold">{item.nome}</span>
                                                         <input
                                                             className="cursor-pointer"
                                                             type="checkbox"
@@ -556,7 +582,7 @@ export default function Home() {
                                             <button className={clicked ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
                                                 "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                                 onClick={handleToggle}>
-                                                Persona
+                                                Público-alvo
                                                 <span className="control">{clicked ? "—" : "+"} </span>
                                             </button>
                                             <div className={`answer_wrapper ${clicked ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
@@ -564,7 +590,7 @@ export default function Home() {
                                                     <div className="h-auto">
                                                         {modalidades.map((item) => (
                                                         <div key={item.id} className='flex flex-row justify-between items-center w-full mb-2'>
-                                                            <span className="text-md font-semibold">{item.slug}</span>
+                                                            <span className="text-md font-semibold">{item.nome}</span>
                                                             <input
                                                                 className="cursor-pointer"
                                                                 type="checkbox"
@@ -586,7 +612,7 @@ export default function Home() {
                                             <button className={clickedTip ? "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-t-lg" : 
                                                 "button p-2 text-[#2563eb] font-bold text-left bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 hover:cursor-pointer flex flex-wrap w-full justify-between items-center px-2 mt-6 shadow-lg rounded-lg"}
                                                 onClick={handleToggleTip}>
-                                                Temas
+                                                Categoria
                                                 <span className="control">{clickedTip ? "—" : "+"} </span>
                                             </button>
                                             <div className={`answer_wrapper ${clickedTip ? "active h-40 p-2 mb-5 bg-gray-200 dark:bg-white dark:text-black border-l-2 border-gray-400 rounded-b-lg overflow-y-scroll" : "hidden"}`}> 
@@ -624,7 +650,7 @@ export default function Home() {
                                                     <div className="h-auto">
                                                         {secretarias.map((item) => (
                                                         <div key={item.id} className='flex flex-row justify-between items-center w-full mb-2'>
-                                                            <span className="text-md font-semibold">{item.slug}</span>
+                                                            <span className="text-md font-semibold">{item.nome}</span>
                                                             <input
                                                                 className="cursor-pointer"
                                                                 type="checkbox"
@@ -644,9 +670,9 @@ export default function Home() {
                         </div>                                
                     </div>
                 </div>
-                <div className='flex flex-col md:w-[75%] w-full h-auto bg-[#F3F3F3]'>
+                <div className='flex flex-col md:w-[80%] w-full h-auto bg-[#F3F3F3]'>
                     <div className='flex flex-col bg-[#e2ebf7] dark:bg-white w-full h-auto mr-20'>
-                        <div className='flex items-center justify-center md:w-full md:pr-20 mt-5 mb-5'>
+                        <div className='flex items-center justify-center md:w-full md:pr-20 mt-2 mb-2'>
                             <div className='flex flex-row justify-start items-center w-full h-full p-2'>
                                 <input type="search" 
                                     className="form-control relative z-10 flex-auto min-w-0 block w-full px-3 py-3.5 text-base font-normal text-gray-700 bg-white dark:bg-black dark:text-white bg-clip-padding border border-solid border-gray-300 rounded-l-lg transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-700 focus:outline-none" 
@@ -654,7 +680,7 @@ export default function Home() {
                                     aria-label="Search" 
                                     aria-describedby="button-addon3" 
                                     value={search} 
-                                    onChange={(e) => {setSearch(e.target.value)}} />
+                                       onChange={(e) => {setSearch(e.target.value)}} />
                                 <button 
                                     className="btn inline-block px-6 py-3.5 border-1 border-[#172554] text-white font-medium text-xs leading-tight uppercase rounded-r-lg bg-[#172554] hover:bg-[#93c5fd] hover:text-black transition duration-150 ease-in-out" 
                                     onClick={handleSearch}
@@ -665,10 +691,10 @@ export default function Home() {
                             </div>
                         </div>
                     </div>
-                    <div className='flex bg-[#F3F3F3] dark:bg-gray-900 w-full h-auto md:pr-20 '>
-                        <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-[#F3F3F3] dark:bg-gray-800 '> 
-                            <div className='w-full h-auto mr-2 dark:bg-gray-800 '> 
-                                <div className='flex flex-col w-full h-4/5 text-black'>
+                    <div className='flex-col bg-[#F3F3F3] dark:bg-gray-900 w-full h-[80%] md:pr-20 '>
+                        <div className='flex flex-col justify-between w-full h-[90%] text-black p-2 bg-[#F3F3F3] dark:bg-gray-800 '> 
+                            <div className='w-full min-h-[70%] mr-2 dark:bg-gray-800 '> 
+                                <div className='flex flex-col w-full h-full text-black'>
                                     <div className="grid grid-cols-1 gap-1 md:grid-cols-3 md:gap-4 ml-1 px-0 py-0 ">            
                                     {servicos?.map((item, idx ) => (
                                         <div key={idx}>
@@ -723,18 +749,20 @@ export default function Home() {
                                         </div>                        
                                     ))}
                                     </div>
+                                </div>                                
+                            </div>                            
+                        </div>   
+                        <div className='flex-col dark:bg-gray-900 w-full p-2 md:px-2'>
+                            <div className='flex flex-row justify-between w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 rounded-lg '> 
+                                <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 text-gray-300 '>   
+                                    {currentPage}-{newPage}                                     
                                 </div>
-                                <div className='flex flex-row justify-between items-center w-full text-black p-2 bg-gray-300 dark:bg-white border-t-2 border-gray-200 rounded-lg '> 
-                                    <div className='w-64 h-auto mr-5 md:w-80 md:mr-10 '>   
-                                       {currentPage}-{newPage}                                     
-                                    </div>
-                                    <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
-                                        <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
-                                    </div>
+                                <div className='flex flex-row w-auto text-black p-2 bg-gray-300'>
+                                    <Pagination pages={pages} setCurrentPage={setCurrentPage} setNewPage={setNewPage} pagInitial={pagDefault} /> 
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>                                           
+                    </div>                                 
                 </div>                
             </div>
             <div className='bg-white dark:bg-black md:ml-20 md:mr-20 md:mt-10 md:mb-3 rounded-lg'>
@@ -743,123 +771,3 @@ export default function Home() {
         </div>
     )
 }
-
-// <div key={idx} className='bg-[#fff7ed] h-64 mt-1 mb-3 rounded-lg overflow-hidden shadow-lg dark:hover:bg-black '> 
-// <div className="flex flex-row items-start justify-between px-2 ">
-//      <div className="flex flex-col items-start px-2 py-2 h-36">
-//            <span className='text-[12px] font-bold mt-1'>Objetivo</span>
-//            <div className="text-[12px] mb-0" dangerouslySetInnerHTML={{ __html: item.descricao }} />
-//            </div>                
-//        </div>
-
-
-
-/*
-    useEffect(() => {
-        setCurrentPage(1);      
-        if(atualiza === 1) {
-            if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                console.log('filtro: 1')
-                axios({
-                    method: 'get',    
-                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?per_page=${perPageDefault}&page=${currentPage}`,
-                }).then(function(response) {
-                    setServicos(response.data)
-                    setPages(Number(response.headers["x-wp-totalpages"]));
-                }).catch(function(error) {
-                    console.log(error)
-                })
-            }else 
-                if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-                    console.log('filtro: 2')
-                    axios({
-                        method: 'get',    
-                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&per_page=${perPageDefault}&page=${currentPage}`,
-                    }).then(function(response) {
-                        setServicos(response.data)
-                        setPages(Number(response.headers["x-wp-totalpages"]));
-                    }).catch(function(error) {
-                        console.log(error)
-                    })
-                }else {
-                    if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                        console.log('filtro: 3')
-                        axios({
-                            method: 'get',    
-                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                        }).then(function(response) {
-                            setServicos(response.data)
-                            setPages(Number(response.headers["x-wp-totalpages"]));
-                        }).catch(function(error) {
-                            console.log(error)
-                        })
-                    }else {
-                        if (idsMod.length !== 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                            console.log('filtro: 4')
-                            axios({
-                                method: 'get',    
-                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&secretaria=${idsSec}&tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                            }).then(function(response) {
-                                setServicos(response.data)
-                                setPages(Number(response.headers["x-wp-totalpages"]));
-                            }).catch(function(error) {
-                                console.log(error)
-                            })
-                        }else {
-                            if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length !== 0 ) {
-                                console.log('filtro: 5')
-                                axios({
-                                    method: 'get',    
-                                    url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?secretaria=${idsSec}&tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                }).then(function(response) {
-                                    setServicos(response.data)
-                                    setPages(Number(response.headers["x-wp-totalpages"]));
-                                }).catch(function(error) {
-                                    console.log(error)
-                                })
-                            }else {
-                                if (idsMod.length === 0 && idsSec.length !== 0 && idsTip.length === 0 ) {
-                                    console.log('filtro: 6')
-                                    axios({
-                                        method: 'get',    
-                                        url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?secretaria=${idsSec}&per_page=${perPageDefault}&page=${currentPage}`,
-                                    }).then(function(response) {
-                                        setServicos(response.data)
-                                        setPages(Number(response.headers["x-wp-totalpages"]));
-                                    }).catch(function(error) {
-                                        console.log(error)
-                                    })
-                                }else {
-                                    if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                        console.log('filtro: 7')
-                                        axios({
-                                            method: 'get',    
-                                            url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                        }).then(function(response) {
-                                            setServicos(response.data)
-                                            setPages(Number(response.headers["x-wp-totalpages"]));
-                                        }).catch(function(error) {
-                                            console.log(error)
-                                        })
-                                    }else {
-                                        if (idsMod.length !== 0 && idsSec.length === 0 && idsTip.length !== 0 ) {
-                                            console.log('filtro: 8')
-                                            axios({
-                                                method: 'get',    
-                                                url: `https://www.aparecida.go.gov.br/wp-json/wp/v2/servicos?persona=${idsMod}&tema=${idsTip}&per_page=${perPageDefault}&page=${currentPage}`,
-                                            }).then(function(response) {
-                                                setServicos(response.data)
-                                                setPages(Number(response.headers["x-wp-totalpages"]));
-                                            }).catch(function(error) {
-                                                console.log(error)
-                                            })
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } 
-                } 
-            }    
-    }, [idsMod, idsTip, idsSec])
-    */
