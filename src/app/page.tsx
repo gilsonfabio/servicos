@@ -90,7 +90,7 @@ export default function Home() {
     const [pages, setPages] = useState(0);
     const [pagDefault, setPagDefault] = useState(0);
     
-    const perPageDefault = 12;
+    let perPageDefault = 12;
     
     const [newPage, setNewPage] = useState(0);
 
@@ -190,11 +190,10 @@ export default function Home() {
     useEffect(() => {
         setCurrentPage(1);
         
-        const perPageDefault = 0;
         if (idsMod.length === 0 && idsSec.length === 0 && idsTip.length === 0 ) {
-           const perPageDefault = 12;
+           perPageDefault = 12;
         }else{
-           const perPageDefault = 50;
+           perPageDefault = 50;
         }
 
         if(atualiza === 1) {
